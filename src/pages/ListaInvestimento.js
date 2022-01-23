@@ -3,10 +3,7 @@ import { Button, FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View } fr
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ResgateInvestimento from './ResgateInvestimento'
-
-import { Icon } from 'react-native-elements';
 const Stack = createNativeStackNavigator();
-
 
 export default function ListaInvestimento(navigation) {
     const [value, setValue] = useState([]);
@@ -20,7 +17,6 @@ export default function ListaInvestimento(navigation) {
         } catch (error) {
             console.error(error);
         }
-        console.log('value',value)
     }, []);
 
     return (
@@ -73,13 +69,6 @@ export default function ListaInvestimento(navigation) {
                             </View>
                         )}
                     </View>
-
-                    {/* <Button 
-                        title="Go to Details"
-                        onPress={() => navigation.navigate('ResgateInvestimento')}
-                    /> */}
-
-
 
                 </ScrollView>
             </SafeAreaView>

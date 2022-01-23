@@ -3,83 +3,53 @@ import { FlatList, Modal, Pressable, SafeAreaView, ScrollView, StyleSheet, Text,
 // import { TextInput } from 'react-native-paper';
 import MaskInput, { Masks } from 'react-native-mask-input';
 import { Button } from 'react-native-elements/dist/buttons/Button';
+import Confirmacao from '../modais/Confirmacao';
+import ErrorResgate from '../modais/ErrorResgate'
+var y
 export default function ResgateInvestimento({ route, navigation }) {
     const [value, setValue] = useState(navigation.route.params.dado);
     const [text, setText] = useState([]);
     const [valorSoma, setValorSoma] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
-
-    // const { itemId, otherParam } = route.params;
-    useEffect(() => {
-    }, []);
-
-
-    function modalErro() {
-        <View style={styles.centeredView}>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                    setModalVisible(!modalVisible);
-                }}
-            >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Hello World!</Text>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalVisible(!modalVisible)}
-                        >
-                            <Text style={styles.textStyle}>Hide Modal</Text>
-                        </Pressable>
-                    </View>
-                </View>
-            </Modal>
-            <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => setModalVisible(true)}
-            >
-                <Text style={styles.textStyle}>Show Modal</Text>
-            </Pressable>
-        </View>
+    const [modalVisibleErro, setModalVisibleErro] = useState(false);
+    function showModal() {
+        for (let x in text) {
+            const dado = text[x]
+            if (dado && dado.erro === true) {
+                setModalVisibleErro(true)
+                return;
+            }
+        }
+        console.log(text)
+        if (text.length == 0) {
+            alert('Selecione um valor valido.')
+            return;
+        } else {
+            setModalVisible(true)
+        }
     }
-
-
-
 
     function valorResgate(texto, dado, x) {
         let formatar = texto.replace('R$', '').replace('.', '').replace(' ', '');
         let formatarMoeda = formatar.replace(',', '.')
         let soma = 0;
         const array = [...text];
+        y = x
         array[x] = {
             ...dado,
             valorResgatar: formatarMoeda,
             erro: formatarMoeda > (dado.percentual * value.saldoTotal / 100) ? true : false
         }
         setText(array)
-        // console.log(array)
-        // for (let y in array[x]) {
-        //     if (array[y].valorResgatar){
-        //     soma += parseFloat(array[y].valorResgatar);
-        // }
         for (let x in array) {
 
             if (array[x]) {
                 soma += parseFloat(array[x].valorResgatar);
-                console.log("s", soma)
                 setValorSoma(soma)
             } else {
-                console.log("e", soma)
-                // soma += parseFloat(array[x].valorResgatar);
                 setValorSoma(soma)
-
             }
-
         }
-        // }
     }
     return (
         <View style={styles.container}>
@@ -117,7 +87,6 @@ export default function ResgateInvestimento({ route, navigation }) {
                     {value.acoes.map((dado, i) =>
                         <View
                             key={i}
-
                         >
                             <View style={styles.viewA}>
                                 <Text style={styles.viewB}>Ação</Text>
@@ -134,20 +103,6 @@ export default function ResgateInvestimento({ route, navigation }) {
                                     marginBottom: 2
                                 }}
                             >
-                                {/* <MaskInput
-                                    style={{
-                                        borderRadius: 0,
-                                        backgroundColor: '#fff',
-                                        color: '#1e72b0',
-                                        height: 50
-                                    }}
-                                    label="Valor a Resgatar"
-                                    value={text}
-                                    onChangeText={text => setText(text)}
-                                    keyboardType='numeric'
-                                    onBlur={() => console.log("focus lost") }
-                                /> */}
-
                                 <MaskInput
                                     style={{
                                         borderRadius: 0,
@@ -192,85 +147,16 @@ export default function ResgateInvestimento({ route, navigation }) {
                             fontWeight: 'bold'
                         }}
                         title="Confirmar resgate"
-                        onPress={() => setModalVisible(true)}
-                    // onPress={storingDomain}
+                        onPress={showModal}
                     />
 
 
                 </ScrollView>
             </SafeAreaView>
-            {/* Modal pra sucesso */}
-            {/* <View >
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        // Alert.alert("Modal has been clo?sed.");
-                        setModalVisible(!modalVisible);
-                    }}
-                >
-                    <View style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        // marginTop: 22,
-                        
-                        flex: 1,
-                    }} >
-                        <View style={styles.modalView}>
-                            <View >
-                                <Text style={{top: 50, fontSize: 16,  fontWeight: 'bold' }} >RESGATE EFETUADO!</Text>
-                            </View>
-                                <Text style={{margin:7, padding: 7, top: 50, fontSize: 13, fontWeight: '100'} }>O valor solicitado estará em sua conta em até 5 dias úteis</Text>
-                            <Pressable
-                                style={styles.buttonOpen}
-                                onPress={() => setModalVisible(!modalVisible)}
-                                title='aaaa'
-                            >
-                                <Text >Hide Modal</Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                </Modal>
-            </View> */}
 
+            <Modal transparent={true} animationType='slide' visible={modalVisible}>{<Confirmacao />}</Modal>
 
-
-            {/* Modal pra erro */}
-            <View >
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        // Alert.alert("Modal has been clo?sed.");
-                        console.log(text)
-                        setModalVisible(!modalVisible);
-                    }}
-                >
-                    <View style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        // marginTop: 22,
-                        
-                        flex: 1,
-                    }} >
-                        <View style={styles.modalView}>
-                            <View >
-                                <Text style={{top: 50, fontSize: 16,  fontWeight: 'bold' }} >DADOS INVÁLIDOS!</Text>
-                            </View>
-                                <Text style={{margin:7, padding: 7, top: 50, fontSize: 13, fontWeight: '100'} }>Você preencheu um ou mais campos com valor acima do permitido</Text>
-                            <Pressable
-                                style={styles.buttonOpen}
-                                onPress={() =>  console.log(text , value)}
-                                title='aaaa'
-                            >
-                                <Text >Hide Modal</Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                </Modal>
-            </View>
+            <Modal transparent={true} animationType='slide' visible={modalVisibleErro}>{<ErrorResgate dado={{ text, value }} />}</Modal>
         </View>
     );
 }
@@ -285,8 +171,6 @@ const styles = StyleSheet.create({
     },
     header: {
         margin: 0,
-        // position: 'absolute',
-        // overflow: 'hidden',
         backgroundColor: '#1e72b0',
         top: 0,
         height: 120,
@@ -358,7 +242,7 @@ const styles = StyleSheet.create({
         margin: 100,
         top: 100,
         height: 50,
-        fontWeight: 'bold' 
+        fontWeight: 'bold'
     },
     buttonClose: {
         // backgroundColor: "#2196F3",
@@ -372,10 +256,6 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     modalText: {
-        // marginBottom: 213,
-        // height: 120,
-        // width: 120,
-        // textAlign: "center"
     },
     modalA: {
         justifyContent: "center",
