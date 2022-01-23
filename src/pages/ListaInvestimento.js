@@ -29,7 +29,7 @@ export default function ListaInvestimento(navigation) {
             <SafeAreaView >
                 <ScrollView >
                     <View style={styles.header}>
-                        <Text style={styles.texto}>Resga22te</Text>
+                        <Text style={styles.texto}>Resgate</Text>
                     </View>
                     <View >
                         <View style={{
