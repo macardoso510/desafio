@@ -29,9 +29,13 @@ export default function ResgateInvestimento({ route, navigation }) {
         }
     }
 
+    function closeModal() {
+        setModalVisibleErro(false)
+    }
+
     function valorResgate(texto, dado, x) {
-        let formatar = texto.replace('R$', '').replace('.', '').replace(' ', '');
-        let formatarMoeda = formatar.replace(',', '.')
+        let formatar = texto.replaceAll('R$', '').replaceAll('.', '').replaceAll(' ', '');
+        let formatarMoeda = formatar.replaceAll(',', '.')
         let soma = 0;
         const array = [...text];
         y = x
@@ -156,7 +160,7 @@ export default function ResgateInvestimento({ route, navigation }) {
 
             <Modal transparent={true} animationType='slide' visible={modalVisible}>{<Confirmacao />}</Modal>
 
-            <Modal transparent={true} animationType='slide' visible={modalVisibleErro}>{<ErrorResgate dado={{ text, value }} />}</Modal>
+            <Modal transparent={true} animationType='slide' visible={modalVisibleErro}>{<ErrorResgate dado={{ text, value, modalVisibleErro }} closeModal={closeModal} />}</Modal>
         </View>
     );
 }
