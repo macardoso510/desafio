@@ -4,6 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 export default props => {
     const acoes = props.dado.text;
     const resgate = props.dado.value;
+    console.log('acoes', acoes)
+    function validarCampo() {
+        for (let x in acoes) {
+
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -25,10 +31,13 @@ export default props => {
                     <View
                         key={i}
                         style={{
-                            margin: 10
+                            flexDirection: 'column',
+                            justifyContent: 'flex-end',
+                            margin: 5
+
                         }}
                     >
-                        {acoes[i] == undefined ? <Text></Text> :
+                        {acoes[i] && acoes[i].erro === true &&
                             <Text style={{
                                 fontSize: 12,
                                 textAlign: 'center',
@@ -72,7 +81,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5
+        elevation: 50
     },
     text: {
         textAlign: 'center',
@@ -84,7 +93,9 @@ const styles = StyleSheet.create({
     button: {
         justifyContent: 'flex-end',
         fontWeight: 'bold',
-        color: "#1e72b0"
+        backgroundColor: '#FFF003', 
+        color: '1e72b0', 
+        fontWeight: 'bold' 
     },
     corpo: {
         flex: 1,
